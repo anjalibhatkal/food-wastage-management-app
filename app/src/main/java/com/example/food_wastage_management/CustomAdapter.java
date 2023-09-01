@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,17 +15,27 @@ import java.util.ArrayList;
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
 
     private Context context;
-    private ArrayList customerID, customerName, customerEmail, customerPhone, customerAddress, customerZipCode,  foodTypeValue,  foodQuantityValue;
+    private ArrayList<Integer> customerID;
+    private ArrayList<String> customerName, customerEmail, customerPhone, customerAddress, customerZipCode, foodTypeValue, foodQuantityValue;
+    private OnRecycleClickListener listener;
+
+    public interface OnRecycleClickListener {
+        void onRecycleClick(int position);
+    }
+
+    public void setOnRecycleClickListener(OnRecycleClickListener clickListener) {
+        listener = clickListener;
+    }
 
     CustomAdapter(Context context,
-                  ArrayList customerID,
-                  ArrayList customerName,
-                  ArrayList customerEmail,
-                  ArrayList customerPhone,
-                  ArrayList customerAddress,
-                  ArrayList customerZipCode,
-                  ArrayList foodTypeValue,
-                  ArrayList foodQuantityValue ) {
+                  ArrayList<Integer> customerID,
+                  ArrayList<String> customerName,
+                  ArrayList<String> customerEmail,
+                  ArrayList<String> customerPhone,
+                  ArrayList<String> customerAddress,
+                  ArrayList<String> customerZipCode,
+                  ArrayList<String> foodTypeValue,
+                  ArrayList<String> foodQuantityValue) {
         this.context = context;
         this.customerID = customerID;
         this.customerName = customerName;
@@ -35,27 +46,25 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         this.foodTypeValue = foodTypeValue;
         this.foodQuantityValue = foodQuantityValue;
     }
+
     @NonNull
     @Override
-    public CustomAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.food_row, parent, false);
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.food_row, parent, false);
         return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CustomAdapter.MyViewHolder holder, int position) {
         holder.custidtxt.setText(String.valueOf(customerID.get(position)));
-        holder.custnametxt.setText(String.valueOf(customerName.get(position)));
-        holder.custemailtxt.setText(String.valueOf(customerEmail.get(position)));
-        holder.custphtext.setText(String.valueOf(customerPhone.get(position)));
-        holder.custaddtxt.setText(String.valueOf(customerAddress.get(position)));
-        holder.custziptxt.setText(String.valueOf(customerZipCode.get(position)));
-        holder.foodtypetxt.setText(String.valueOf(foodTypeValue.get(position)));
-        holder.foodqtxt.setText(String.valueOf(foodQuantityValue.get(position)));
+        holder.custnametxt.setText(customerName.get(position));
+        holder.custemailtxt.setText(customerEmail.get(position));
+        holder.custphtext.setText(customerPhone.get(position));
+        holder.custaddtxt.setText(customerAddress.get(position));
+        holder.custziptxt.setText(customerZipCode.get(position));
+        holder.foodtypetxt.setText(foodTypeValue.get(position));
+        holder.foodqtxt.setText(foodQuantityValue.get(position));
     }
-
-
 
     @Override
     public int getItemCount() {
@@ -65,9 +74,12 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView custidtxt, custnametxt, custemailtxt, custphtext, custaddtxt, custziptxt, foodtypetxt, foodqtxt;
+        ImageView imageView;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            imageView = itemView.findViewById(R.id.recycle_button);
             custidtxt = itemView.findViewById(R.id.food_id);
             custnametxt = itemView.findViewById(R.id.customer_name);
             foodtypetxt = itemView.findViewById(R.id.food_type);
@@ -76,6 +88,18 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
             custziptxt = itemView.findViewById(R.id.customer_zipcode);
             custemailtxt = itemView.findViewById(R.id.customer_email);
             foodqtxt = itemView.findViewById(R.id.food_quantity);
+
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onRecycleClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 }

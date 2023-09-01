@@ -1,0 +1,22 @@
+<!-- layout_header.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+
+    <TextView
+        android:id="@+id/headerTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="20dp"
+        android:text="SustainABite"
+        android:background="@color/gradientEnd"
+        android:textColor="@color/button"
+        android:textSize="25sp"
+        android:textStyle="bold"/>
+
+</LinearLayout>

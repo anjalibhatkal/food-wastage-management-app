@@ -7,6 +7,20 @@
     android:background="#ffffff"
     tools:context=".IntroActivity">
 
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Include the header layout -->
+        <include
+            layout="@layout/layout_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- Your activity content here -->
+
+    </RelativeLayout>
+
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/screen_viewpager"
         android:layout_width="394dp"
