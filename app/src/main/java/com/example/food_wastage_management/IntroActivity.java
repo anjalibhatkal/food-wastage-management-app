@@ -47,7 +47,7 @@ public class IntroActivity extends AppCompatActivity {
                     // Handle "Get Started" logic here
                     nextButton.setText("Get Started");
                     // You can perform any action you want for "Get Started"
-                    Intent intent = new Intent(IntroActivity.this, MainActivity.class);
+                    Intent intent = new Intent(IntroActivity.this, SignUpActivity.class);
                     startActivity(intent);                }
                 updateButtonText(); // Update the button text again after click
             }

@@ -19,6 +19,9 @@ class MyDatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_ZIP = "customer_zip";
     private static final String COLUMN_FOODTYPE = "food_type";
     private static final String COLUMN_FOODQUANTITY = "food_quantity";
+    private static final String TABLE_USERS = "users";
+    private static final String COLUMN_USERNAME = "username";
+    private static final String COLUMN_PASSWORD = "password";
 
     public MyDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -27,6 +30,11 @@ class MyDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + TABLE_NAME + " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_NAME + " TEXT NOT NULL, " + COLUMN_EMAIL + " TEXT NOT NULL, " + COLUMN_PHNO + " INTEGER NOT NULL, " + COLUMN_ADDRESS + " TEXT NOT NULL, " + COLUMN_ZIP + " INTEGER NOT NULL, " + COLUMN_FOODTYPE + " TEXT, " + COLUMN_FOODQUANTITY + " INTEGER DEFAULT 0 NOT NULL);");
+        String userTableQuery = "CREATE TABLE " + TABLE_USERS + " (" +
+                COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_USERNAME + " TEXT NOT NULL, " +
+                COLUMN_PASSWORD + " TEXT NOT NULL);";
+        db.execSQL(userTableQuery);
     }
 
     @Override
@@ -35,6 +43,34 @@ class MyDatabaseHelper extends SQLiteOpenHelper {
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
             onCreate(db); // Recreate the table with updated schema
         }
+    }
+
+    public boolean addUser(String username, String password) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(COLUMN_USERNAME, username);
+        cv.put(COLUMN_PASSWORD, password);
+        long result = db.insert(TABLE_USERS, null, cv);
+
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean checkUserCredentials(String username, String password) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] columns = {COLUMN_ID};
+        String selection = COLUMN_USERNAME + " = ?" + " AND " + COLUMN_PASSWORD + " = ?";
+        String[] selectionArgs = {username, password};
+        Cursor cursor = db.query(TABLE_USERS, columns, selection, selectionArgs, null, null, null);
+
+        int count = cursor.getCount();
+        cursor.close();
+
+        return count > 0;
     }
 
     public boolean addFood(String name, String email, String phno, String address, String zip, String foodtype, String foodquantity) {

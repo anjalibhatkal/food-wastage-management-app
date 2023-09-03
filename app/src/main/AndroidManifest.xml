@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -14,14 +15,21 @@
         android:theme="@style/Theme.Food_wastage_management"
         tools:targetApi="31">
         <activity
+            android:name=".SignUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".signIn"
+            android:exported="false"
+            android:parentActivityName=".signUp" />
+        <activity
             android:name=".addedFood"
             android:exported="false"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".receivedFood"
             android:exported="false"
             android:label="SustainABite"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".IntroActivity"
             android:exported="false" />
